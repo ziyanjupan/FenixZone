@@ -1,0 +1,80 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Login</h2>
+
+<label>账号：</label><input class="form-control" type="text" value="" placeholder="账号" />
+<label>密码：</label><input class="form-control" type="text" value="" placeholder="密码" />
+<label>验证码：</label>
+@*<input class="form-control" type="text" value="" placeholder="验证码" /><img src="~/Content/images/captcha.png" />*@
+@*<img src="/Login/CheckCode?ID=1" id="imgCode" alt="单击可刷新" onclick="ClickRemoveChangeCode()" />*@
+<div class="message-error" id="login_tips"></div>
+<div class="item-ifo">
+    <label class="img">
+        <img id="checkCodeImg" src="/Login/GetCheckCode">
+    </label>
+    <input type="text" id="checkCodeBox" class="form-control" name="authcode" maxlength="4" style="width: 120px;display: inline;margin-bottom: 8px;" placeholder="验证码">
+</div>
+<input type="submit" value="提交" class="form-control btn-info" />
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script>
+    $(function () {
+        $('#checkCodeImg').click(function () {
+            refreshCheckCode();
+        });
+    });
+
+    function checkCheckCode() {
+        var loginTips = $('#login_tips');
+
+        if (checkCode && checkCode.length == 4) {
+            $.ajax({
+                type: "post",
+                url: "/login/checkCode",
+                data: { checkCode: checkCode },
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    if (data.success) {
+                        result = true;
+                    }
+                    else {
+                        $('#checkCodeBox').focus();
+                        loginTips.html('验证码错误');
+                    }
+                }
+            });
+        }
+        else {
+            $('#checkCodeBox').focus();
+            if (!checkCode)
+                loginTips.html('请填写验证码');
+            else
+                loginTips.html('验证码错误');
+        }
+
+        //if ($('#checkCodeArea').css('display') == 'none')
+        //    result = true;
+        //else {
+        //    var checkCode = $('#checkCodeBox').val();
+        //    var loginTips = $('#login_tips');
+
+        //    else {
+        //        $('#checkCodeBox').focus();
+        //        if (!checkCode)
+        //            loginTips.html('请填写验证码');
+        //        else
+        //            loginTips.html('验证码错误');
+        //    }
+        //}
+        //return result;
+    }
+
+    function refreshCheckCode() {
+        var path = $('#checkCodeImg').attr('src').split('?')[0];
+        path += '?time=' + new Date().getTime();
+        $('#checkCodeImg').attr('src', path);
+    }
+</script>
