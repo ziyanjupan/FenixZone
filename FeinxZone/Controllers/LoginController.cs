@@ -1,4 +1,5 @@
 ﻿using FeinxZone.Helper;
+using FeinxZone.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,6 +38,20 @@ namespace FeinxZone.Controllers
             catch (Exception)
             {
                 jsonResult = Json(new { success = false, msg = "未知错误" });
+            }
+            return jsonResult;
+        }
+
+        public ActionResult Login(User user)
+        {
+            JsonResult jsonResult;
+            if (user.Name.Equals("zhangsan") && user.Password.Equals("123"))
+            {
+                jsonResult = Json(new { success = true });
+            }
+            else
+            {
+                jsonResult = Json(new { success = false, msg = "账号或密码错误" });
             }
             return jsonResult;
         }

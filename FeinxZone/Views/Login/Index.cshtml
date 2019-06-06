@@ -5,30 +5,89 @@
 
 <h2>Login</h2>
 
-<label>账号：</label><input class="form-control" type="text" value="" placeholder="账号" />
-<label>密码：</label><input class="form-control" type="text" value="" placeholder="密码" />
+<label>账号：</label><input class="form-control" type="text" value="" id="loginname" placeholder="账号" />
+<label>密码：</label><input class="form-control" type="text" value="" id="password" placeholder="密码" />
 <label>验证码：</label>
 @*<input class="form-control" type="text" value="" placeholder="验证码" /><img src="~/Content/images/captcha.png" />*@
 @*<img src="/Login/CheckCode?ID=1" id="imgCode" alt="单击可刷新" onclick="ClickRemoveChangeCode()" />*@
 <div class="message-error" id="login_tips"></div>
 <div class="item-ifo">
     <label class="img">
+        @*TODO：边框，噪点*@
         <img id="checkCodeImg" src="/Login/GetCheckCode">
     </label>
     <input type="text" id="checkCodeBox" class="form-control" name="authcode" maxlength="4" style="width: 120px;display: inline;margin-bottom: 8px;" placeholder="验证码">
 </div>
-<input type="submit" value="提交" class="form-control btn-info" />
+<input type="button" id="btn-submit" value="提交" class="form-control btn-info" />
 <script src="~/Scripts/jquery-3.3.1.min.js"></script>
 <script>
     $(function () {
         $('#checkCodeImg').click(function () {
             refreshCheckCode();
         });
+
+        $('#btn-submit').click(function () {
+            submit();
+        });
     });
 
-    function checkCheckCode() {
-        var loginTips = $('#login_tips');
+    function submit() {
+        var username = $('#loginname').val();
+        var password = $('#password').val();
+        var result = checkCheckCode();
+        //, checkCode: checkCode, keep: keep
+        if (result) {
+            $.post('/Login/Login',
+                { name: username, password: password },
+                function (data) {
+                    //loading.close();
+                    if (data.success) {//登录成功
+                        //$.cookie('GuiNong-DefaultUserName', username, { path: "guinong360.com", expires: 365 });
+                        //var returnUrl = decodeURIComponent(QueryString('returnUrl')).replace('&amp;', '&');
 
+                        location.href = '/'; //跳转至买家中心
+
+                        //if (returnUrl)
+                        //    location.href = returnUrl;
+                        //else if (data.IsChildSeller == true) {
+                        //    location.href = "/sellerAdmin";
+                        //}
+                        //else {
+                        //}
+                    }
+                    else {
+                        //var isFirstShowCheckcode = false;
+                        refreshCheckCode();
+                        //if (data.errorTimes > data.minTimesWithoutCheckCode) {//需要验证码
+                        //    if ($('#checkCodeArea').css('display') == 'none') {
+                        //        isFirstShowCheckcode = true;
+                        //        $('#password').val('');
+                        //        loginTips.html(data.msg).addClass('error');
+                        //    }
+
+                        //    $('#checkCodeArea').show();
+                        //    $('#autoentry').css('margin-top', 0);
+                        //}
+                        //else {
+                        //    $('#checkCodeArea').hide();
+                        //    $('#autoentry').removeAttr('style');
+                        //}
+                        //if (!isFirstShowCheckcode) {
+                        //    $('#password').val('');
+                        //    loginTips.html(data.msg).addClass('error');
+                        //    $('#password').focus();
+                        //}
+                        //else
+                        //    $('#checkCodeBox').focus();
+                    }
+                });
+        }
+    }
+
+    function checkCheckCode() {
+        var checkCode = $('#checkCodeBox').val();
+        var loginTips = $('#login_tips');
+        var result = false;
         if (checkCode && checkCode.length == 4) {
             $.ajax({
                 type: "post",
@@ -69,7 +128,7 @@
         //            loginTips.html('验证码错误');
         //    }
         //}
-        //return result;
+        return result;
     }
 
     function refreshCheckCode() {
