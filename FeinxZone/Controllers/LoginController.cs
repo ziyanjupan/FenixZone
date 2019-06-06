@@ -29,14 +29,12 @@ namespace FeinxZone.Controllers
         public JsonResult CheckCode(string checkCode)
         {
             JsonResult jsonResult;
-            try
-            {
+            try {
                 string item = base.Session["checkCode"] as string;
                 bool lower = item.ToLower() == checkCode.ToLower();
                 jsonResult = Json(new { success = lower });
             }
-            catch (Exception)
-            {
+            catch (Exception) {
                 jsonResult = Json(new { success = false, msg = "未知错误" });
             }
             return jsonResult;
@@ -45,12 +43,12 @@ namespace FeinxZone.Controllers
         public ActionResult Login(User user)
         {
             JsonResult jsonResult;
-            if (user.Name.Equals("zhangsan") && user.Password.Equals("123"))
-            {
+            if (user.Name.Equals("zhangsan") && user.Password.Equals("123")) {
                 jsonResult = Json(new { success = true });
+                HttpContext.Session["currentUserId"] = "zhangsan";
+                //HttpContext.Session.Timeout = 1;
             }
-            else
-            {
+            else {
                 jsonResult = Json(new { success = false, msg = "账号或密码错误" });
             }
             return jsonResult;

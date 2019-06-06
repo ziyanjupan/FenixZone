@@ -16,7 +16,7 @@
         @*TODO：边框，噪点*@
         <img id="checkCodeImg" src="/Login/GetCheckCode">
     </label>
-    <input type="text" id="checkCodeBox" class="form-control" name="authcode" maxlength="4" style="width: 120px;display: inline;margin-bottom: 8px;" placeholder="验证码">
+    <input type="text" id="checkCodeBox" class="form-control" name="authcode" maxlength="6" style="width: 146px;display: inline;margin-left: 20px;" placeholder="验证码">
 </div>
 <input type="button" id="btn-submit" value="提交" class="form-control btn-info" />
 <script src="~/Scripts/jquery-3.3.1.min.js"></script>
@@ -88,7 +88,7 @@
         var checkCode = $('#checkCodeBox').val();
         var loginTips = $('#login_tips');
         var result = false;
-        if (checkCode && checkCode.length == 4) {
+        if (checkCode && checkCode.length == 6) {
             $.ajax({
                 type: "post",
                 url: "/login/checkCode",

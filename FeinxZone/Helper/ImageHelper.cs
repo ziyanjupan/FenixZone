@@ -37,13 +37,11 @@ namespace FeinxZone.Helper
         public static void CreateThumbnail(string sourceFilename, string destFilename, int width, int height)
         {
             Image image = Image.FromFile(sourceFilename);
-            if ((image.Width > width ? true : image.Height > height))
-            {
+            if ((image.Width > width ? true : image.Height > height)) {
                 int num = image.Width;
                 int num1 = image.Height;
                 float single = (float)height / (float)num1;
-                if ((float)width / (float)num < single)
-                {
+                if ((float)width / (float)num < single) {
                     single = (float)width / (float)num;
                 }
                 width = (int)((float)num * single);
@@ -60,14 +58,11 @@ namespace FeinxZone.Helper
                 ImageCodecInfo[] imageEncoders = ImageCodecInfo.GetImageEncoders();
                 ImageCodecInfo imageCodecInfo = null;
                 int num2 = 0;
-                while (num2 < (int)imageEncoders.Length)
-                {
-                    if (!imageEncoders[num2].FormatDescription.Equals("JPEG"))
-                    {
+                while (num2 < (int)imageEncoders.Length) {
+                    if (!imageEncoders[num2].FormatDescription.Equals("JPEG")) {
                         num2++;
                     }
-                    else
-                    {
+                    else {
                         imageCodecInfo = imageEncoders[num2];
                         break;
                     }
@@ -79,8 +74,7 @@ namespace FeinxZone.Helper
                 bitmap.Dispose();
                 graphic.Dispose();
             }
-            else
-            {
+            else {
                 File.Copy(sourceFilename, destFilename, true);
                 image.Dispose();
             }
@@ -94,28 +88,25 @@ namespace FeinxZone.Helper
             //ColorTranslator.FromHtml("#1AE61A");
             char[] chrArray = new char[] { '2', '3', '4', '5', '6', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'R', 'S', 'T', 'W', 'X', 'Y' };
             Random random = new Random();
-            for (i = 0; i < 4; i++)
-            {
+            for (i = 0; i < 6; i++) {
                 checkCode = string.Concat(checkCode, chrArray[random.Next((int)chrArray.Length)]);
             }
-            Bitmap bitmap = new Bitmap(85, 30);
+            Bitmap bitmap = new Bitmap(110, 30);
             Graphics graphic = Graphics.FromImage(bitmap);
             Random random1 = new Random(DateTime.Now.Millisecond);
             Brush solidBrush = new SolidBrush(ColorTranslator.FromHtml("#000000"));
             graphic.Clear(ColorTranslator.FromHtml("#FFFFFF"));
             //graphic.Clear(ColorTranslator.FromHtml("#EBFDDF"));
             StringFormat stringFormat = new StringFormat();
-            try
-            {
+            try {
                 stringFormat.Alignment = StringAlignment.Center;
                 stringFormat.LineAlignment = StringAlignment.Center;
                 stringFormat.FormatFlags = StringFormatFlags.NoWrap;
                 Matrix matrix = new Matrix();
-                float width = -25f;
+                float width = -30f;
                 float single = 0f;
                 graphic.SmoothingMode = SmoothingMode.AntiAlias;
-                for (i = 0; i < checkCode.Length; i++)
-                {
+                for (i = 0; i < checkCode.Length; i++) {
                     int num = random1.Next(20, 24);
                     Font font = ImageHelper.CreateFont(IOHelper.GetMapPath("/fonts/mono.ttf"), (float)num, FontStyle.Regular, GraphicsUnit.Point, 0);
                     char chr = checkCode[i];
@@ -131,22 +122,18 @@ namespace FeinxZone.Helper
                     font.Dispose();
                 }
             }
-            finally
-            {
-                if (stringFormat != null)
-                {
+            finally {
+                if (stringFormat != null) {
                     ((IDisposable)stringFormat).Dispose();
                 }
             }
             Pen pen = new Pen(Color.Black, 0f);
             MemoryStream memoryStream1 = new MemoryStream();
-            try
-            {
+            try {
                 bitmap.Save(memoryStream1, ImageFormat.Png);
                 memoryStream = memoryStream1;
             }
-            finally
-            {
+            finally {
                 bitmap.Dispose();
                 graphic.Dispose();
             }
@@ -160,73 +147,59 @@ namespace FeinxZone.Helper
             Image bitmap = null;
             ImageAttributes imageAttribute = null;
             Graphics graphic = null;
-            try
-            {
-                try
-                {
+            try {
+                try {
                     image = Image.FromFile(originalPath);
                     bitmap = new Bitmap(watermarkPath);
-                    if ((bitmap.Height >= image.Height ? false : bitmap.Width < image.Width))
-                    {
-                        if ((quality < 0 ? true : quality > 100))
-                        {
+                    if ((bitmap.Height >= image.Height ? false : bitmap.Width < image.Width)) {
+                        if ((quality < 0 ? true : quality > 100)) {
                             quality = 80;
                         }
                         single = ((opacity <= 0 ? true : opacity > 10) ? 0.5f : (float)((float)opacity / 10f));
                         int width = 0;
                         int height = 0;
-                        switch (position)
-                        {
-                            case 1:
-                                {
+                        switch (position) {
+                            case 1: {
                                     width = (int)((float)image.Width * 0.01f);
                                     height = (int)((float)image.Height * 0.01f);
                                     break;
                                 }
-                            case 2:
-                                {
+                            case 2: {
                                     width = (int)((float)image.Width * 0.5f - (float)(bitmap.Width / 2));
                                     height = (int)((float)image.Height * 0.01f);
                                     break;
                                 }
-                            case 3:
-                                {
+                            case 3: {
                                     width = (int)((float)image.Width * 0.99f - (float)bitmap.Width);
                                     height = (int)((float)image.Height * 0.01f);
                                     break;
                                 }
-                            case 4:
-                                {
+                            case 4: {
                                     width = (int)((float)image.Width * 0.01f);
                                     height = (int)((float)image.Height * 0.5f - (float)(bitmap.Height / 2));
                                     break;
                                 }
-                            case 5:
-                                {
+                            case 5: {
                                     width = (int)((float)image.Width * 0.5f - (float)(bitmap.Width / 2));
                                     height = (int)((float)image.Height * 0.5f - (float)(bitmap.Height / 2));
                                     break;
                                 }
-                            case 6:
-                                {
+                            case 6: {
                                     width = (int)((float)image.Width * 0.99f - (float)bitmap.Width);
                                     height = (int)((float)image.Height * 0.5f - (float)(bitmap.Height / 2));
                                     break;
                                 }
-                            case 7:
-                                {
+                            case 7: {
                                     width = (int)((float)image.Width * 0.01f);
                                     height = (int)((float)image.Height * 0.99f - (float)bitmap.Height);
                                     break;
                                 }
-                            case 8:
-                                {
+                            case 8: {
                                     width = (int)((float)image.Width * 0.5f - (float)(bitmap.Width / 2));
                                     height = (int)((float)image.Height * 0.99f - (float)bitmap.Height);
                                     break;
                                 }
-                            case 9:
-                                {
+                            case 9: {
                                     width = (int)((float)image.Width * 0.99f - (float)bitmap.Width);
                                     height = (int)((float)image.Height * 0.99f - (float)bitmap.Height);
                                     break;
@@ -260,42 +233,33 @@ namespace FeinxZone.Helper
                         Encoder encoder = Encoder.Quality;
                         long[] numArray = new long[] { (long)quality };
                         param[0] = new EncoderParameter(encoder, numArray);
-                        if (ImageHelper.GetJPEGCodec() == null)
-                        {
+                        if (ImageHelper.GetJPEGCodec() == null) {
                             image.Save(targetPath);
                         }
-                        else
-                        {
+                        else {
                             image.Save(targetPath, ImageHelper._jpegcodec, encoderParameter);
                         }
                     }
-                    else
-                    {
+                    else {
                         image.Save(targetPath);
                         return;
                     }
                 }
-                catch (Exception exception)
-                {
+                catch (Exception exception) {
                     throw exception;
                 }
             }
-            finally
-            {
-                if (graphic != null)
-                {
+            finally {
+                if (graphic != null) {
                     graphic.Dispose();
                 }
-                if (imageAttribute != null)
-                {
+                if (imageAttribute != null) {
                     imageAttribute.Dispose();
                 }
-                if (bitmap != null)
-                {
+                if (bitmap != null) {
                     bitmap.Dispose();
                 }
-                if (image != null)
-                {
+                if (image != null) {
                     image.Dispose();
                 }
             }
@@ -305,72 +269,59 @@ namespace FeinxZone.Helper
         {
             Image image = null;
             Graphics graphic = null;
-            try
-            {
-                try
-                {
+            try {
+                try {
                     image = Image.FromFile(originalPath);
                     graphic = Graphics.FromImage(image);
-                    if ((quality < 0 ? true : quality > 100))
-                    {
+                    if ((quality < 0 ? true : quality > 100)) {
                         quality = 80;
                     }
                     Font font = new Font(textFont, (float)textSize, FontStyle.Regular, GraphicsUnit.Pixel);
                     SizeF sizeF = graphic.MeasureString(text, font);
                     float width = 0f;
                     float height = 0f;
-                    switch (position)
-                    {
-                        case 1:
-                            {
+                    switch (position) {
+                        case 1: {
                                 width = (float)image.Width * 0.01f;
                                 height = (float)image.Height * 0.01f;
                                 break;
                             }
-                        case 2:
-                            {
+                        case 2: {
                                 width = (float)image.Width * 0.5f - sizeF.Width / 2f;
                                 height = (float)image.Height * 0.01f;
                                 break;
                             }
-                        case 3:
-                            {
+                        case 3: {
                                 width = (float)image.Width * 0.99f - sizeF.Width;
                                 height = (float)image.Height * 0.01f;
                                 break;
                             }
-                        case 4:
-                            {
+                        case 4: {
                                 width = (float)image.Width * 0.01f;
                                 height = (float)image.Height * 0.5f - sizeF.Height / 2f;
                                 break;
                             }
-                        case 5:
-                            {
+                        case 5: {
                                 width = (float)image.Width * 0.5f - sizeF.Width / 2f;
                                 height = (float)image.Height * 0.5f - sizeF.Height / 2f;
                                 break;
                             }
-                        case 6:
-                            {
+                        case 6: {
                                 width = (float)image.Width * 0.99f - sizeF.Width;
                                 height = (float)image.Height * 0.5f - sizeF.Height / 2f;
                                 break;
                             }
-                        case 7:
-                            {
+                        case 7: {
                                 width = (float)image.Width * 0.01f;
                                 height = (float)image.Height * 0.99f - sizeF.Height;
                                 break;
                             }
-                        case 8:
-                            {
+                        case 8: {
                                 width = (float)image.Width * 0.5f - sizeF.Width / 2f;
                                 height = (float)image.Height * 0.99f - sizeF.Height;
                                 break;
                             }
-                        case 9:
-                            {
+                        case 9: {
                                 width = (float)image.Width * 0.99f - sizeF.Width;
                                 height = (float)image.Height * 0.99f - sizeF.Height;
                                 break;
@@ -383,28 +334,22 @@ namespace FeinxZone.Helper
                     Encoder encoder = Encoder.Quality;
                     long[] numArray = new long[] { (long)quality };
                     param[0] = new EncoderParameter(encoder, numArray);
-                    if (ImageHelper.GetJPEGCodec() == null)
-                    {
+                    if (ImageHelper.GetJPEGCodec() == null) {
                         image.Save(targetPath);
                     }
-                    else
-                    {
+                    else {
                         image.Save(targetPath, ImageHelper._jpegcodec, encoderParameter);
                     }
                 }
-                catch (Exception exception)
-                {
+                catch (Exception exception) {
                     throw exception;
                 }
             }
-            finally
-            {
-                if (graphic != null)
-                {
+            finally {
+                if (graphic != null) {
                     graphic.Dispose();
                 }
-                if (image != null)
-                {
+                if (image != null) {
                     image.Dispose();
                 }
             }
@@ -413,19 +358,15 @@ namespace FeinxZone.Helper
         public static ImageCodecInfo GetJPEGCodec()
         {
             ImageCodecInfo imageCodecInfo;
-            if (!ImageHelper._isloadjpegcodec)
-            {
+            if (!ImageHelper._isloadjpegcodec) {
                 ImageCodecInfo[] imageEncoders = ImageCodecInfo.GetImageEncoders();
                 int num = 0;
-                while (num < (int)imageEncoders.Length)
-                {
+                while (num < (int)imageEncoders.Length) {
                     ImageCodecInfo imageCodecInfo1 = imageEncoders[num];
-                    if (imageCodecInfo1.MimeType.IndexOf("jpeg") <= -1)
-                    {
+                    if (imageCodecInfo1.MimeType.IndexOf("jpeg") <= -1) {
                         num++;
                     }
-                    else
-                    {
+                    else {
                         ImageHelper._jpegcodec = imageCodecInfo1;
                         break;
                     }
@@ -433,8 +374,7 @@ namespace FeinxZone.Helper
                 ImageHelper._isloadjpegcodec = true;
                 imageCodecInfo = ImageHelper._jpegcodec;
             }
-            else
-            {
+            else {
                 imageCodecInfo = ImageHelper._jpegcodec;
             }
             return imageCodecInfo;
