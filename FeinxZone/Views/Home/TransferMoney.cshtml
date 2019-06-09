@@ -1,0 +1,44 @@
+﻿
+@{
+    ViewBag.Title = "Transfer Money";
+}
+
+<h2>Transfer Money</h2>
+
+@if (ViewBag.ToAccount == null)
+{
+    @*using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()*@
+    <label>Account:</label><input type="text" class="form-control" name="ToAccount" id="toAccount" />
+    <label>Money:</label><input type="text" class="form-control" name="Money" id="money" />
+    <input type="button" id="submit" class="form-control btn-info" style="margin-top:10px" value="转账" />
+    //}
+}
+else
+{
+    @:您已经向账号 [@ViewBag.ToAccount] 转入 [@ViewBag.Money] 元！
+}
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script type="text/javascript">
+    function gettoken() {
+        var token = '@Html.AntiForgeryToken()';
+        token = $(token).val();
+        return token;
+    }
+    $('#submit').click(function () {
+         $.ajax({
+            type: "POST",
+            url: "/Home/TransferMoney",
+            data: {
+                __RequestVerificationToken: gettoken(),
+                toAccount: $('#toAccount').val(),
+                money: $('#money').val()
+            },
+            dataType: 'json',
+                contentType: 'application/x-www-form-urlencoded; charset=utf-8',
+                success: alert("ok"),
+        });
+    });
+
+</script>

@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using FeinxZone.Attributes;
+using System.Web;
 using System.Web.Mvc;
 
 namespace FeinxZone
@@ -8,6 +9,7 @@ namespace FeinxZone
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
             filters.Add(new HandleErrorAttribute());
+            //filters.Add(new AuthAttribute());
         }
     }
 }

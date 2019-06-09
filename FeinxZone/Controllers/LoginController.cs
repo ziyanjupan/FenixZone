@@ -8,6 +8,7 @@ using System.Web.Mvc;
 
 namespace FeinxZone.Controllers
 {
+    //[AllowAnonymous]
     public class LoginController : Controller
     {
         // GET: Login
@@ -39,6 +40,8 @@ namespace FeinxZone.Controllers
             }
             return jsonResult;
         }
+
+        //[ValidateAntiForgeryToken]
 
         public ActionResult Login(User user)
         {
